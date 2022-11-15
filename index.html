@@ -1,1 +1,147 @@
-HTML.
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classes Shop</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <script src="https://unpkg.com/vue@2.7.8/dist/vue.js"></script>
+
+    <style>
+        p {
+            padding: 0;
+            margin: 0;
+            font-size: 18px;
+        }
+
+        button {
+            text-align: center;
+            background-color: #008CBA;
+            color: white;
+            padding: 6px;
+            font-size: 15px;
+            border: none;
+            float: right;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .class_windows {
+            display: flex;
+            padding-top: 20px;
+        }
+
+        #app {
+            padding: 10px;
+            align-items: center;
+        }
+
+        #panel_layout {
+            border-radius: 25px;
+            border: 1px solid #008CBA;
+            padding: 10px;
+            width: 250px;
+            height: 150px;
+        }
+
+        #text_layout {
+            padding: 5% 5%;
+
+        }
+
+        #img {
+            width: 50px;
+            height: 50px;
+            float: right;
+        }
+
+        #disabledbutton {
+            background-color: #A9A9A9;
+            color: #E0E0E0;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+
+
+        <header class="navigation">
+            <div>
+                <h1 v-text="sitename"></h1>
+            </div>
+
+            <div style="align-self: center;">
+                <button v-on:click="toggleShowProduct">
+
+                    {{ cartCountItems }}
+                    <span class="fas fa-shopping-cart"></span> Checkout
+                </button>
+            </div>
+        </header>
+
+        <div class="class_windows" v-if="showProduct">
+            <div id="panel_layout">
+                <div id="text_layout">
+                    <img id="img" v-bind:src="product.imgSRC" v-bind:alt="product.imgALT" />
+                    <p v-text="product.title"></p>
+                    <p v-text="product.location"></p>
+                    <p v-text="product.price"></p>
+                    <p>Spaces: {{ product.spaces }} </p>
+                    <button v-on:click="addToCart(); decreaseSpaces();" v-if="canAddToCart">Add to cart</button>
+                    <button id="disabledbutton" disabled="disabled" v-else>Add to cart</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="welcome_page" v-else>Welcome!</div>
+
+    </div>
+
+    <script type="text/javascript">
+        var app = new Vue({
+            el: '#app',
+            data: {
+                sitename: "Classes Shop",
+                showProduct: true,
+                product: {
+                    id: 1001,
+                    imgALT: "Math img",
+                    imgSRC: "math.png",
+                    title: "Subject: Math",
+                    location: "Location: London",
+                    price: "Price: £100",
+                    spaces: 5,
+                },
+                cart: [],
+            },
+            methods: {
+                decreaseSpaces: function () {
+                    this.product.spaces--;
+                },
+                addToCart: function () {
+                    this.cart.push(this.product.id);
+                },
+                toggleShowProduct: function () {
+                    this.showProduct = this.showProduct ? false : true;
+                },
+            },
+            computed: {
+                cartCountItems: function () {
+                    return this.cart.length || "";
+                },
+                canAddToCart: function () {
+                    return this.product.spaces > this.cartCountItems;
+                },
+            }
+        });
+    </script>
+</body>
+
+</html>
