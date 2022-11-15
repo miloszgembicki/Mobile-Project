@@ -1,0 +1,55 @@
+p {
+    padding: 0;
+    margin: 0;
+    font-size: 18px;
+}
+
+button {
+    text-align: center;
+    background-color: #008CBA;
+    color: white;
+    padding: 6px;
+    font-size: 15px;
+    border: none;
+    float: right;
+}
+
+.navigation {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.class_windows {
+    display: flex;
+    padding-top: 20px;
+}
+
+#app {
+    padding: 10px;
+    align-items: center;
+}
+
+#panel_layout {
+    border-radius: 25px;
+    border: 1px solid #008CBA;
+    padding: 10px;
+    width: 250px;
+    height: 150px;
+}
+
+#text_layout {
+    padding: 5% 5%;
+
+}
+
+#img {
+    width: 50px;
+    height: 50px;
+    float: right;
+}
+
+#disabledbutton {
+    background-color: #A9A9A9;
+    color: #E0E0E0;
+}
