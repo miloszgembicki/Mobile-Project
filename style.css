@@ -21,8 +21,8 @@ button {
 }
 
 .class_windows {
-    display: flex;
-    padding-top: 20px;
+    display: inline-block;
+    margin: 39px;
 }
 
 #app {

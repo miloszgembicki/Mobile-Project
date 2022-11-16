@@ -8,6 +8,7 @@
     <title>Classes Shop</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
     <script src="https://unpkg.com/vue@2.7.8/dist/vue.js"></script>
+    <script src="products.js"></script>
     <link rel="stylesheet" href="style.css">
 </head>
 
@@ -29,16 +30,32 @@
             </div>
         </header>
 
-        <div class="class_windows" v-if="showProduct">
-            <div id="panel_layout">
-                <div id="text_layout">
-                    <img id="img" v-bind:src="product.imgSRC" v-bind:alt="product.imgALT" />
-                    <p v-text="product.title"></p>
-                    <p v-text="product.location"></p>
-                    <p v-text="product.price"></p>
-                    <p>Spaces: {{ product.spaces }} </p>
-                    <button v-on:click="addToCart" v-if="canAddToCart">Add to cart</button>
-                    <button id="disabledbutton" disabled="disabled" v-else>Add to cart</button>
+        <div v-if="showProduct">
+            <div class="class_windows" v-for="product in sortedProducts">
+                <div id="panel_layout">
+                    <div id="text_layout">
+                        <img id="img" v-bind:src="product.imgSRC" v-bind:alt="product.imgALT" />
+                        <p v-text="product.title"></p>
+                        <p v-text="product.location"></p>
+                        <p>Price: £{{product.price}}</p>
+                        <p>Assigned Spaces: {{ product.spaces }} </p>
+                        <button v-on:click="addToCart(product)" v-if="canAddToCart(product)">Add to cart</button>
+                        <button id="disabledbutton" disabled="disabled" v-else>Add to cart</button>
+                        <span v-if="itemsLeft(product) === 0">
+                            No spaces available!
+                        </span>
+                        <span v-else-if="itemsLeft(product) < 5">
+                            Only {{itemsLeft(product)}} left!
+                        </span>
+                        <span v-else>
+                            Buy Now!
+                        </span>
+
+                        <div>
+                            <span v-for="n in product.rating">★</span>
+                            <span v-for="n in 5 - product.rating">☆</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -106,15 +123,7 @@
                 data: {
                     sitename: "Classes Shop",
                     showProduct: true,
-                    product: {
-                        id: 1001,
-                        imgALT: "Math img",
-                        imgSRC: "math.png",
-                        title: "Subject: Math",
-                        location: "Location: London",
-                        price: "Price: £100",
-                        spaces: 5,
-                    },
+                    products: products,
                     cart: [],
                     order: {
                         name: "",
@@ -134,23 +143,44 @@
                     },
                 },
                 methods: {
-                    addToCart: function () {
-                        this.cart.push(this.product.id);
+                    addToCart: function (product) {
+                        this.cart.push(product.id);
                     },
                     toggleShowProduct: function () {
                         this.showProduct = this.showProduct ? false : true;
                     },
                     submitCheckoutForm: function () {
                         alert("Congratulations, order submitted!");
+                    },
+                    canAddToCart: function (product) {
+                        return product.spaces > this.cartCount(product.id);
+                    },
+                    cartCount: function (id) {
+                        let count = 0;
+                        for (let i = 0; i < this.cart.length; i++) {
+                            if (this.cart[i] === id) {
+                                count++;
+                            }
+                        }
+                        return count;
+                    },
+                    itemsLeft: function (product) {
+                        return product.spaces - this.cartCount(product.id);
                     }
                 },
                 computed: {
                     cartCountItems: function () {
                         return this.cart.length || "";
                     },
-                    canAddToCart: function () {
-                        return this.product.spaces > this.cartCountItems;
-                    },
+                    sortedProducts: function () {
+                        function compare(a, b) {
+                            if (a.price > b.price) return 1;
+                            if (a.price < b.price) return -1;
+                            return 0;
+                        }
+
+                        return this.products.sort(compare);
+                    }
                 }
             });
         </script>
