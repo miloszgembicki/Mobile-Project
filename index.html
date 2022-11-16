@@ -8,64 +8,7 @@
     <title>Classes Shop</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
     <script src="https://unpkg.com/vue@2.7.8/dist/vue.js"></script>
-
-    <style>
-        p {
-            padding: 0;
-            margin: 0;
-            font-size: 18px;
-        }
-
-        button {
-            text-align: center;
-            background-color: #008CBA;
-            color: white;
-            padding: 6px;
-            font-size: 15px;
-            border: none;
-            float: right;
-        }
-
-        .navigation {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-        }
-
-        .class_windows {
-            display: flex;
-            padding-top: 20px;
-        }
-
-        #app {
-            padding: 10px;
-            align-items: center;
-        }
-
-        #panel_layout {
-            border-radius: 25px;
-            border: 1px solid #008CBA;
-            padding: 10px;
-            width: 250px;
-            height: 150px;
-        }
-
-        #text_layout {
-            padding: 5% 5%;
-
-        }
-
-        #img {
-            width: 50px;
-            height: 50px;
-            float: right;
-        }
-
-        #disabledbutton {
-            background-color: #A9A9A9;
-            color: #E0E0E0;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
@@ -94,54 +37,123 @@
                     <p v-text="product.location"></p>
                     <p v-text="product.price"></p>
                     <p>Spaces: {{ product.spaces }} </p>
-                    <button v-on:click="addToCart(); decreaseSpaces();" v-if="canAddToCart">Add to cart</button>
+                    <button v-on:click="addToCart" v-if="canAddToCart">Add to cart</button>
                     <button id="disabledbutton" disabled="disabled" v-else>Add to cart</button>
                 </div>
             </div>
         </div>
 
-        <div class="welcome_page" v-else>Welcome!</div>
+        <div class="welcome_page" v-else>
+            Welcome!
 
-    </div>
+            <p>
+                <strong>Name: </strong>
+                <input type="text" v-model.trim="order.name">
+            </p>
+            <p>
+                <strong>Surname: </strong>
+                <input type="text" v-model.trim="order.surname">
+            </p>
+            <p>
+                <strong>State</strong>
+                <select v-model="order.state">
+                    <option disabled>Select State</option>
+                    <option v-for="(state, key) in states" v-bind:value="state"> {{key}} </option>
+                </select>
+            </p>
+            <p>
+                <strong>ZIP/Posal Code: </strong>
+                <input type="text" v-model.trim="order.zip">
+            </p>
+            <p>
+                <input type="checkbox" id="gift" v-model="order.gift" v-bind:true-value="order.sendGift"
+                    v-bind:false-value="order.dontSendGift">
+                <label for="gift">Send as a gift?</label>
+            </p>
+            <p>
+                <input type="radio" id="home" value="Home" v-model="order.method">
+                <label for="home">Home</label>
+                <input type="radio" id="business" value="Business" v-model="order.method">
+                <label for="business">Business</label>
+            </p>
 
-    <script type="text/javascript">
-        var app = new Vue({
-            el: '#app',
-            data: {
-                sitename: "Classes Shop",
-                showProduct: true,
-                product: {
-                    id: 1001,
-                    imgALT: "Math img",
-                    imgSRC: "math.png",
-                    title: "Subject: Math",
-                    location: "Location: London",
-                    price: "Price: £100",
-                    spaces: 5,
+            <h2>Order Information</h2>
+            <p>
+                <strong>Name: </strong> {{order.name}}
+            </p>
+            <p>
+                <strong>Surname: </strong> {{order.surname}}
+            </p>
+            <p>
+                <strong>State: </strong> {{order.state}}
+            </p>
+            <p>
+                <strong>ZIP/Postal Code: </strong> {{order.zip}}
+            </p>
+            <p>
+                <strong>Gift? </strong> {{order.gift}}
+            </p>
+            <p>
+                <strong>Deliver to adress: </strong> {{order.method}}
+            </p>
+            <button id="submit_checkout" v-on:click=" submitCheckoutForm">Place Order</button>
+
+        </div>
+
+        <script type="text/javascript">
+            var app = new Vue({
+                el: '#app',
+                data: {
+                    sitename: "Classes Shop",
+                    showProduct: true,
+                    product: {
+                        id: 1001,
+                        imgALT: "Math img",
+                        imgSRC: "math.png",
+                        title: "Subject: Math",
+                        location: "Location: London",
+                        price: "Price: £100",
+                        spaces: 5,
+                    },
+                    cart: [],
+                    order: {
+                        name: "",
+                        surname: "",
+                        zip: "",
+                        state: "",
+                        gift: "Don't send as a gift.",
+                        sendGift: "Send as a gift.",
+                        dontSendGift: "Don't send as a gift.",
+                        method: "Home"
+                    },
+                    states: {
+                        AL: 'Alabama',
+                        AR: 'Arizona',
+                        CA: 'California',
+                        NV: 'Nevada'
+                    },
                 },
-                cart: [],
-            },
-            methods: {
-                decreaseSpaces: function () {
-                    this.product.spaces--;
+                methods: {
+                    addToCart: function () {
+                        this.cart.push(this.product.id);
+                    },
+                    toggleShowProduct: function () {
+                        this.showProduct = this.showProduct ? false : true;
+                    },
+                    submitCheckoutForm: function () {
+                        alert("Congratulations, order submitted!");
+                    }
                 },
-                addToCart: function () {
-                    this.cart.push(this.product.id);
-                },
-                toggleShowProduct: function () {
-                    this.showProduct = this.showProduct ? false : true;
-                },
-            },
-            computed: {
-                cartCountItems: function () {
-                    return this.cart.length || "";
-                },
-                canAddToCart: function () {
-                    return this.product.spaces > this.cartCountItems;
-                },
-            }
-        });
-    </script>
+                computed: {
+                    cartCountItems: function () {
+                        return this.cart.length || "";
+                    },
+                    canAddToCart: function () {
+                        return this.product.spaces > this.cartCountItems;
+                    },
+                }
+            });
+        </script>
 </body>
 
 </html>
