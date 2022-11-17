@@ -32,6 +32,7 @@
         </header>
 
         <div v-if="showProduct">
+
             <p>
             <h3>Sort Classes by:</h3>
             <input type="radio" id="price" value="price" v-model="sortType" v-on:click="sortProducts">
@@ -43,12 +44,14 @@
             <input type="radio" id="location" value="location" v-model="sortType" v-on:click="sortProducts">
             <label for="location">Location</label>
             </p>
+
             <p>
                 <input type="radio" id="ascending" value="ascending" v-model="chosenSort" v-on:click="sortProducts">
                 <label for="ascending">Ascending</label>
                 <input type="radio" id="descending" value="descending" v-model="chosenSort" v-on:click="sortProducts">
                 <label for="descending">Descending</label>
             </p>
+
             <div class="class_windows" v-for="product in products">
                 <div id="panel_layout">
                     <div id="text_layout">
@@ -59,6 +62,7 @@
                         <p>Assigned Spaces: {{ product.spaces }} </p>
                         <button v-on:click="addToCart(product)" v-if="canAddToCart(product)">Add to cart</button>
                         <button id="disabledbutton" disabled="disabled" v-else>Add to cart</button>
+
                         <span v-if="itemsLeft(product) === 0">
                             No spaces available!
                         </span>
@@ -73,28 +77,36 @@
                             <span v-for="n in product.rating">★</span>
                             <span v-for="n in 5 - product.rating">☆</span>
                         </div>
+
                     </div>
                 </div>
             </div>
         </div>
 
         <div class="welcome_page" v-else>
-            Welcome!
-
-            <div class="class_windows" v-for="id in cart">
-                lol {{products.title}}
+            <div class="class_windows" v-for="product in cart">
+                <div id="panel_layout">
+                    <div id="text_layout">
+                        <img id="img" v-bind:src="product.imgSRC" v-bind:alt="product.imgALT" />
+                        <p>Subject: {{product.title}}</p>
+                        <p>Location: {{product.location}}</p>
+                        <p>Price: £{{product.price}}</p>
+                        <button v-on:click="removeFromCart(product)">Remove from
+                            cart</button>
+                    </div>
+                </div>
             </div>
-
-
 
             <p>
                 <strong>Name: </strong>
-                <input type="text" v-model.trim="order.name">
+                <input type=" text" v-model.trim="order.name">
             </p>
+
             <p>
                 <strong>Surname: </strong>
                 <input type="text" v-model.trim="order.surname">
             </p>
+
             <p>
                 <strong>State</strong>
                 <select v-model="order.state">
@@ -102,15 +114,18 @@
                     <option v-for="(state, key) in states" v-bind:value="state"> {{key}} </option>
                 </select>
             </p>
+
             <p>
                 <strong>ZIP/Posal Code: </strong>
                 <input type="text" v-model.trim="order.zip">
             </p>
+
             <p>
                 <input type="checkbox" id="gift" v-model="order.gift" v-bind:true-value="order.sendGift"
                     v-bind:false-value="order.dontSendGift">
                 <label for="gift">Send as a gift?</label>
             </p>
+
             <p>
                 <input type="radio" id="home" value="Home" v-model="order.method">
                 <label for="home">Home</label>
@@ -150,8 +165,8 @@
                 showProduct: true,
                 products: products,
                 cart: [],
-                sortType: "price",
-                chosenSort: "ascending",
+                sortType: "",
+                chosenSort: "",
                 order: {
                     name: "",
                     surname: "",
@@ -171,7 +186,10 @@
             },
             methods: {
                 addToCart: function (product) {
-                    this.cart.push(product.id);
+                    this.cart.push(product);
+                },
+                removeFromCart: function (product) {
+                    this.cart.splice(this.cart.indexOf(product.id));
                 },
                 toggleShowProduct: function () {
                     this.showProduct = this.showProduct ? false : true;
@@ -180,7 +198,7 @@
                     alert("Congratulations, order submitted!");
                 },
                 canAddToCart: function (product) {
-                    return product.spaces > this.cartCount(product.id);
+                    return product.spaces > this.cartCount(product);
                 },
                 cartCount: function (id) {
                     let count = 0;
@@ -192,7 +210,7 @@
                     return count;
                 },
                 itemsLeft: function (product) {
-                    return product.spaces - this.cartCount(product.id);
+                    return product.spaces - this.cartCount(product);
                 },
                 sortProducts: function () {
                     let compare = this.products.sort((a, b) => {
@@ -213,7 +231,7 @@
                 cartCountItems: function () {
                     return this.cart.length || "";
                 }
-            }
+            },
         });
     </script>
 </body>
