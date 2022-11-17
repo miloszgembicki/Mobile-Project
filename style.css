@@ -49,7 +49,7 @@ button {
     float: right;
 }
 
-#disabledbutton {
+#disabled_button {
     background-color: #A9A9A9;
     color: #E0E0E0;
 }
