@@ -16,6 +16,7 @@
     <div id="app">
 
         <header class="navigation">
+
             <div>
                 <h1 v-text="sitename"></h1>
             </div>
@@ -28,6 +29,7 @@
                 <button id="disabled_button" disabled="disabled" v-else>
                     <span class="fas fa-shopping-cart"></span> Cart</button>
             </div>
+
         </header>
 
         <div v-if="showProduct">
@@ -39,6 +41,7 @@
 
             <div id="sort_panel">
                 <p>Sort by:</p>
+
                 <p>
                     <input type="radio" id="price" value="price" v-model="sortType" v-on:click="sortProducts">
                     <label for="price">Price</label>
@@ -57,11 +60,13 @@
                         v-on:click="sortProducts">
                     <label for="descending">Descending</label>
                 </p>
+
             </div>
 
             <div class="class_windows" v-for="product in searchFilter">
                 <div id="panel_layout">
                     <div id="text_layout">
+
                         <img id="img" v-bind:src="product.imgSRC" v-bind:alt="product.imgALT" />
                         <p>Subject: {{product.title}}</p>
                         <p>Location: {{product.location}}</p>
@@ -72,9 +77,11 @@
                             <span v-if="itemsLeft(product) === 0">
                                 No spaces available!
                             </span>
+
                             <span v-else-if="itemsLeft(product) < 5">
                                 Only {{itemsLeft(product)}} left!
                             </span>
+
                             <span v-else>
                                 Buy Now!
                             </span>
@@ -82,7 +89,6 @@
                             <button v-on:click="addToCart(product)" v-if="canAddToCart(product)">Add to
                                 cart</button>
                             <button id="disabled_button" disabled="disabled" v-else>Add to cart</button>
-
                         </div>
 
                     </div>
@@ -101,6 +107,7 @@
                 <div class="class_windows" v-for="product in cart">
                     <div id="panel_layout">
                         <div id="text_layout">
+
                             <img id="img" v-bind:src="product.imgSRC" v-bind:alt="product.imgALT" />
                             <p>Subject: {{product.title}}</p>
                             <p>Location: {{product.location}}</p>
@@ -130,6 +137,7 @@
                     <button v-on:click="submitCheckoutForm" v-if="goodPhone && goodName">Place Order</button>
                     <button id="disabled_button" disabled="disabled" v-else>Place Order</button>
                 </div>
+
             </div>
         </div>
 
