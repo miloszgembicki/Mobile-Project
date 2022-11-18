@@ -11,7 +11,6 @@ button {
     padding: 6px;
     font-size: 15px;
     border: none;
-    float: right;
 }
 
 .navigation {
@@ -25,9 +24,23 @@ button {
     margin: 39px;
 }
 
+.welcome_page h1 {
+    font-weight: normal;
+    font-size: 25px;
+    text-align: center;
+}
+
 #app {
     padding: 10px;
     align-items: center;
+}
+
+#sort_panel {
+    margin-left: 45px;
+}
+
+#sort_panel p {
+    font-size: 15px;
 }
 
 #panel_layout {
@@ -35,12 +48,11 @@ button {
     border: 1px solid #008CBA;
     padding: 10px;
     width: 250px;
-    height: 150px;
+    height: 145px;
 }
 
 #text_layout {
     padding: 5% 5%;
-
 }
 
 #img {
@@ -54,6 +66,38 @@ button {
     color: #E0E0E0;
 }
 
-#submit_checkout {
-    float: left;
+#checkout_form {
+    text-align: center;
+    font-size: 17px;
+    font-weight: bold;
+}
+
+#checkout_form input {
+    font-size: 17px;
+    margin: 0 5px;
+    outline: 0;
+    border-width: 0 0 2px;
+    border-color: #008CBA;
+}
+
+#checkout_form span {
+    font-weight: bold;
+    color: #008CBA;
+}
+
+#button_align {
+    padding-top: 10px;
+    text-align: center;
+    display: block;
+}
+
+#search_wrap {
+    float: right;
+    margin-right: 45px;
+}
+
+#search_wrap input {
+    outline: 0;
+    border-width: 0 0 2px;
+    border-color: #008CBA;
 }
